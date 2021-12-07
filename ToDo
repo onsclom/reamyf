@@ -1,0 +1,23 @@
+current goals:
+    o make a functional prototype:
+        o implement basic parser that can run example code
+            x setup test project
+            o rest of the owl
+
+future goals (in no particular order):
+    o make in browser IDE with code mirror
+        o syntax highlighting
+        o console
+        o nice error messages
+        o perhaps a bit of line by line debugging like stuff?
+    o read input
+        o mouse
+        o keyboard
+        o game controller?
+        o midi?
+    o auto generated docs
+        o parse the JSDOC for auto generated documentation?
+    o make a way to learn the language through exercises!
+        o exercises should be super easy
+        o should be able to complete them all in one session
+        o should throw some confetti at the end and say "wow you learned the whole language, nice" lol
