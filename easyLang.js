@@ -11,7 +11,7 @@ To run easyLang code:
 
 class easyLang {
   constructor() {
-    /** @type {Array.<string>} */
+    /** @type {Array.<Array.<string>>} */
     this.lines = [];
     /** @type {number} */
     this.instructionPointer = 0;
@@ -37,42 +37,39 @@ class easyLang {
   run(inputScript, ctx) {
     this.ctx = ctx;
     this.setup(inputScript);
-
-    this.executeCode(0)
-
-    
+    this.executeCode(0);
   }
 
   /**
-   * 
-   * @param {number} startLine 
+   *
+   * @param {number} startLine
    */
   executeCode(startLine) {
     //run code line by line until reaching EOF
     this.instructionPointer = startLine;
     while (this.instructionPointer < this.lines.length && this.error == false) {
       let curLine = this.lines[this.instructionPointer];
-      if (curLine != "" && curLine[0] != "#" && curLine[0] != "@") {
+      if (curLine.length != 0 && curLine[0] != "" && curLine[0] != "#" && curLine[0] != "@") {
         this.executeInstruction(curLine);
       }
       this.instructionPointer += 1;
     }
   }
-  
+
   runAnimationFrame() {
-    this.executeCode( this.nameToHeaderLine["ANIMATION_LOOP"] )
+    this.executeCode(this.nameToHeaderLine["ANIMATION_LOOP"]);
   }
 
   /**
    * Executes a single function call
-   * @param {string} curLine
+   * @param {Array.<string>} curLine
    */
   executeInstruction(curLine) {
-    let command = curLine.split(" ")[0];
+    let command = curLine[0];
     if (this.standardLib[command] != null) {
       this.standardLib[command](curLine);
     } else {
-      this.sendError(`Unrecognized command ${command}`);
+      this.sendError(`Unrecognized command "${command}"`);
     }
   }
 
@@ -81,22 +78,23 @@ class easyLang {
    * @param {string} inputScript
    */
   setup(inputScript) {
-    this.lines = inputScript.split("\n").map((line) => line.trim());
+    this.lines = []
+    this.lines = inputScript.split("\n").map((line) => (line.trim()).split(" "));
     // setup the headers
     for (
       this.instructionPointer = 0;
       this.instructionPointer < this.lines.length;
       this.instructionPointer += 1
     ) {
-      if (this.lines[this.instructionPointer] == "") continue;
-      const instructionParts = this.lines[this.instructionPointer].split(" ");
+      if (this.lines[this.instructionPointer].length==0) continue;
+      const instructionParts = this.lines[this.instructionPointer];
       if (instructionParts[0] != "@") continue;
       if (instructionParts.length != 2)
         this.sendError("@ should only have 1 argument.");
       this.nameToHeaderLine[instructionParts[1]] = this.instructionPointer;
     }
     // done with file
-    ctx.imageSmoothingEnabled = true;
+    this.ctx.imageSmoothingEnabled = true;
   }
 
   /**
@@ -119,12 +117,10 @@ class easyLang {
     let found = valueString.match(tableExprRegex);
     if (found) {
       return this.tables[found[1]][found[2]];
-    }
-    else if (this.vars[valueString] != null) {
+    } else if (this.vars[valueString] != null) {
       return Number(this.vars[valueString]);
-    }
-    else {
-      return Number(valueString)
+    } else {
+      return Number(valueString);
     }
   }
 }
@@ -138,13 +134,7 @@ class easyLangStdLib {
     this.core = core;
   }
 
-  /**
-   * Sets a variable with given arguments
-   *
-   * @param {string} instructionString
-   */
-  varset(instructionString) {
-    let parts = instructionString.split(" ");
+  varset(parts) {
     if (parts.length != 3) {
       this.core.sendError("var takes 2 args");
       return;
@@ -154,8 +144,7 @@ class easyLangStdLib {
     this.core.vars[parts[1]] = result;
   }
 
-  table(instructionString) {
-    let parts = instructionString.split(" ");
+  table(parts) {
     if (parts.length != 2) {
       this.core.sendError("table takes 1 arg");
       return;
@@ -163,12 +152,7 @@ class easyLangStdLib {
     this.core.tables[parts[1]] = {};
   }
 
-  /**
-   * Sets the variable in arg1 to a float between arg2 and arg3
-   * @param {string} instructionString
-   */
-  rand(instructionString) {
-    let parts = instructionString.split(" ");
+  rand(parts) {
     if (parts.length != 4) {
       this.core.sendError(`rand takes 3 arguments`);
       return;
@@ -176,129 +160,103 @@ class easyLangStdLib {
     const randMin = this.core.getValue(parts[2]);
     const randMax = this.core.getValue(parts[3]);
     let randNum = Math.random() * (randMax - randMin) + randMin;
-    
+
     let found = parts[1].match(tableExprRegex);
     if (found) {
-      this.core.tables[found[1]][found[2]] = randNum
+      this.core.tables[found[1]][found[2]] = randNum;
+    } else {
+      this.core.vars[parts[1]] = randNum;
     }
-    else {
-      this.core.vars[parts[1]] = randNum
-    } 
   }
 
-  /**
-   * Pushes value with key
-   * @param {string} instructionString
-   */
-  tpush(instructionString) {
-    let parts = instructionString.split(" ");
+  tpush(parts) {
     if (parts.length != 3) {
       this.core.sendError(`tpush takes 2 args`);
       return;
     }
 
-    let tableName = parts[1]
-    let index = Object.keys(this.core.tables[parts[1]]).length
-    this.core.tables[tableName][index] = this.core.getValue(parts[2])
+    let tableName = parts[1];
+    let index = Object.keys(this.core.tables[parts[1]]).length;
+    this.core.tables[tableName][index] = this.core.getValue(parts[2]);
   }
 
-  /**
-   * 
-   * @param {string} instructionString 
-   */
-  add(instructionString) {
-    let parts = instructionString.split(" ");
+  add(parts) {
     if (parts.length != 3) {
       this.core.sendError(`add takes 2 args`);
       return;
     }
 
-    let value = this.core.getValue(parts[2])
+    let value = this.core.getValue(parts[2]);
     let found = parts[1].match(tableExprRegex);
     if (found) {
-      this.core.tables[found[1]][found[2]] += value
+      this.core.tables[found[1]][found[2]] += value;
+    } else {
+      this.core.vars[parts[1]] += value;
     }
-    else {
-      this.core.vars[parts[1]] += value
-    } 
   }
 
-  /**
-   * takes <, >, ==, !=
-   * @param {string} instructionString 
-   */
-  jumpif(instructionString) {
-    let parts = instructionString.split(" ");
+  jumpif(parts) {
     if (parts.length != 5) {
       this.core.sendError(`jumpif takes 5 args`);
       return;
     }
 
-    const value1 = this.core.getValue(parts[1])
-    const value2 = this.core.getValue(parts[3])
+    const value1 = this.core.getValue(parts[1]);
+    const value2 = this.core.getValue(parts[3]);
 
-    const compareChar = parts[2]
-    let evalString = `${value1} ${compareChar} ${value2}`
+    const compareChar = parts[2];
+    let evalString = `${value1} ${compareChar} ${value2}`;
     if (eval(evalString)) {
-      this.core.instructionPointer = this.core.nameToHeaderLine[parts[4]]
+      this.core.instructionPointer = this.core.nameToHeaderLine[parts[4]];
     }
   }
 
-  clrsc(instructionString) {
-    ctx.fillStyle = 'black'
-    ctx.fillRect(0,0,200,200);
+  clrsc(parts) {
+    this.core.ctx.fillStyle = "black";
+    this.core.ctx.fillRect(0, 0, 200, 200);
   }
 
-  round(instructionString) {
-    let parts = instructionString.split(" ")
-    let value = this.core.getValue(parts[1])
+  round(parts) {
+    let value = this.core.getValue(parts[1]);
 
     let found = parts[1].match(tableExprRegex);
     if (found) {
-      this.core.tables[found[1]][found[2]] = Math.round(value)
+      this.core.tables[found[1]][found[2]] = Math.round(value);
+    } else {
+      this.core.vars[parts[1]] = Math.round(value);
     }
-    else {
-      this.core.vars[parts[1]] = Math.round(value)
-    } 
   }
 
-  mod(instructionString) {
-    let parts = instructionString.split(" ")
-    let value = this.core.getValue(parts[2])
+  mod(parts) {
+    let value = this.core.getValue(parts[2]);
 
     let found = parts[1].match(tableExprRegex);
     if (found) {
-      this.core.tables[found[1]][found[2]] %= value
+      this.core.tables[found[1]][found[2]] %= value;
+    } else {
+      this.core.vars[parts[1]] %= value;
     }
-    else {
-      this.core.vars[parts[1]] %= value
-    } 
   }
 
-  pixel(instructionString) {
-    let parts = instructionString.split(" ")
-    let x = this.core.getValue(parts[1])
-    let y = this.core.getValue(parts[2])
-    ctx.fillStyle="white"
-    ctx.fillRect(x,y,1,1)
+  pixel(parts) {
+    let x = this.core.getValue(parts[1]);
+    let y = this.core.getValue(parts[2]);
+    this.core.ctx.fillStyle = "white";
+    this.core.ctx.fillRect(x, y, 1, 1);
   }
 
-  t2v(instructionString) {
-    let parts = instructionString.split(" ")
-    let tableName = parts[1]
-    let index = this.core.getValue( parts[2] )
-    let variableName = parts[3]
-
-    this.core.vars[variableName] = this.core.tables[tableName][index]
+  t2v(parts) {
+    let tableName = parts[1];
+    let index = this.core.getValue(parts[2]);
+    let variableName = parts[3];
+    this.core.vars[variableName] = this.core.tables[tableName][index];
   }
 
-  v2t(instructionString) {
-    let parts = instructionString.split(" ")
-    let variableName = parts[1]
-    let tableName = parts[2]
-    let index = this.core.getValue( parts[3] )
-
-    this.core.tables[tableName][index] = this.core.getValue(variableName)
+  v2t(parts) {
+    let variableName = parts[1];
+    let tableName = parts[2];
+    let index = this.core.getValue(parts[3]);
+    this.core.tables[tableName][index] = this.core.getValue(variableName);
   }
 }
 

@@ -1,10 +1,17 @@
 current goals:
-    o make a functional prototype:
-        o implement basic parser that can run example code
-            x setup test project
-            o rest of the owl
+    - add more functions
+        - line, circle, rect
+        - more math stuff
+        - rename table to list perhaps?
+    - add a console with nice error handling
+        - include error for when frame takes too long (perhaps use made an infinite loop or something crazy)
+    - make some nice examples
+        - particle.js like line things
+        - snow
+        - hyperspeed star field?
+        - perhaps a 3d cube wireframe?
 
-future goals (in no particular order):
+maybe future goals (in no particular order):
     o make in browser IDE with code mirror
         o syntax highlighting
         o console

@@ -6,98 +6,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Language Test</title>
     <style>
-        html, body {
-            margin:0;
-            padding:0;
-            width:100%;
-            height:100%;
-        }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+      }
     </style>
+    <script src="lib/codemirror.js"></script>
+    <link rel="stylesheet" href="lib/codemirror.css" />
   </head>
-  <body style="">
-    <div style="display:grid;width:100%;height:100%;grid-template-columns: 50% 50%; align-items: stretch;justify-items: stretch;">
-
-        <canvas id="canvas" width="200" height="200" style="image-rendering: -moz-crisp-edges;
-        image-rendering: -webkit-crisp-edges;
-        image-rendering: pixelated;
-        image-rendering: crisp-edges; object-fit: contain; max-width: 100%; max-height: 100%; padding: 1rem; box-sizing:border-box"> </canvas>
-
-            <pre id="code" style="overflow: scroll; height: 100%; margin:0;padding: 1rem; box-sizing:border-box; background-color:#111; color: #eee; ">varset screen_size 200
-
-# --- particle data -----------------
-varset particle_amount 30
-table particle_xs 
-table particle_ys
-table particle_dxs
-table particle_dys
-
-# --- initializing particles --------
-varset i 0
-# initialize random start x, start y, speed x, and speed y for each particle)
-@ INIT_PARTICLE
-rand rand_val 0 200
-tpush particle_xs rand_val
-
-rand rand_val 0 200
-tpush particle_ys rand_val
-
-rand rand_val -1 1
-tpush particle_dxs rand_val
-
-rand rand_val -1 1
-tpush particle_dys rand_val
-
-add i 1
-jumpif i < particle_amount INIT_PARTICLE
-
-# --- animation loop ----------------
-@ ANIMATION_LOOP
-clrsc 0
-varset i 0
-
-# -- move each particle
-@ UPDATE_PARTICLE
-    t2v particle_xs i cur_x 
-    t2v particle_dxs i cur_dx
-    t2v particle_ys i cur_y
-    t2v particle_dys i cur_dy
-
-    add cur_x cur_dx
-    add cur_y cur_dy
-
-    # -- reset x if in negative
-    jumpif curx > -1 PARTICLE_X_GOOD
-    add cur_x 200
-    @ PARTICLE_X_GOOD
-    # -- reset y if in negative
-    jumpif cury > -1 PARTICLE_Y_GOOD
-    add cur_y 200
-    @ PARTICLE_Y_GOOD
-
-    v2t cur_x particle_xs i
-    v2t cur_y particle_ys i
-
-    add i 1
-    jumpif i < particle_amount UPDATE_PARTICLE
-
-    varset i 0
-
-# -- draw each particle
-@ DRAW_PARTICLE
-    t2v particle_xs i drawable_x
-    t2v particle_ys i drawable_y
-
-    round drawable_x
-    round drawable_y
-
-    mod drawable_x screen_size
-    mod drawable_y screen_size
-
-    pixel drawable_x drawable_y
-
-    add i 1
-    jumpif i < particle_amount DRAW_PARTICLE</pre
-    >
+  <body>
+    <div style="display: flex; height: 100%">
+      <textarea id="codeMirrorId" style="display: block; height: 100%"></textarea>
+  
+      <div>
+        <canvas
+          id="canvas"
+          width="200"
+          height="200"
+          style="
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -webkit-crisp-edges;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            width: 400px;
+            height: 400px;
+          "
+        >
+        </canvas>
+        <button id="runButton">RUN</button>
+        <button id="stopButton">STOP</button>
+      </div>
     </div>
 
     <script src="easyLang.js"></script>
