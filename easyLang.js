@@ -5,7 +5,7 @@ const tableExprRegex = /^(\w+)\[(\w+)\]$/;
 /*
 To run easyLang code:
 1. run through the code and save all the headers with their corresponding line number in nameToHeaderLine
-2. start parsing instructions one by one until at end of file or time out? (need a way to check for time out perhaps)
+2. start parsing instructions one by one until at end of file or time out? (TODO: check for timeout)
 3. start an animation loop starting on the "@ ANIMATION_LOOP"
 */
 
@@ -114,10 +114,7 @@ class easyLang {
    * @returns {number}
    */
   getValue(valueString) {
-    let found = valueString.match(tableExprRegex);
-    if (found) {
-      return this.tables[found[1]][found[2]];
-    } else if (this.vars[valueString] != null) {
+    if (this.vars[valueString] != null) {
       return Number(this.vars[valueString]);
     } else {
       return Number(valueString);
