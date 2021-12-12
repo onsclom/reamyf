@@ -141,9 +141,9 @@ class easyLangStdLib {
     this.core.vars[parts[1]] = result;
   }
 
-  table(parts) {
+  list(parts) {
     if (parts.length != 2) {
-      this.core.sendError("table takes 1 arg");
+      this.core.sendError("list takes 1 arg");
       return;
     }
     this.core.tables[parts[1]] = {};
@@ -166,9 +166,9 @@ class easyLangStdLib {
     }
   }
 
-  tpush(parts) {
+  push(parts) {
     if (parts.length != 3) {
-      this.core.sendError(`tpush takes 2 args`);
+      this.core.sendError(`push takes 2 args`);
       return;
     }
 
@@ -242,18 +242,31 @@ class easyLangStdLib {
     this.core.ctx.fillRect(x, y, 1, 1);
   }
 
-  t2v(parts) {
+  l2v(parts) {
     let tableName = parts[1];
     let index = this.core.getValue(parts[2]);
     let variableName = parts[3];
     this.core.vars[variableName] = this.core.tables[tableName][index];
   }
 
-  v2t(parts) {
+  v2l(parts) {
     let variableName = parts[1];
     let tableName = parts[2];
     let index = this.core.getValue(parts[3]);
     this.core.tables[tableName][index] = this.core.getValue(variableName);
+  }
+
+  
+  line(parts) {
+    let x1 = this.core.getValue(parts[1]);
+    let y1 = this.core.getValue(parts[2]);
+    let x2 = this.core.getValue(parts[3]);
+    let y2 = this.core.getValue(parts[4]);
+    ctx.beginPath();
+    this.core.ctx.moveTo(x1,y1)
+    this.core.ctx.lineTo(x2,y2);
+    this.core.ctx.strokeStyle = "white";
+    ctx.stroke()
   }
 }
 

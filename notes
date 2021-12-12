@@ -1,5 +1,0 @@
-Add way to set tables in tables.
-
-Perhaps "var table1 table2[]"?
-
-since table2 = table2[0]

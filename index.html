@@ -4,88 +4,61 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Language Test</title>
-    <script src="lib/codemirror.js"></script>
-    <link rel="stylesheet" href="lib/codemirror.css" />
-    <style>
-      html,
-      body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-      }
-      .CodeMirror {
-        width: 50%;
-        height: 100%;
-      }
-      .mainContent {
-        width: 100%;
-        height: 100%;
-      }
-      .canvasHolder {
-        width: 50%;
-      }
-      .buttonHolder {
-        position: absolute; 
-        top: 0; 
-        left: 50%; 
-        margin: 0.5rem;
-      }
-      @media only screen and (max-width: 600px) {
-        .mainContent {
-          flex-direction: column;
-        }
-        .CodeMirror {
-          width: 100%;
-          height: 50%;
-        }
-        .canvasHolder {
-          width: 100%;
-          height: 50%;
-        }
-        .buttonHolder {
-        position: absolute; 
-        top: 50%;  
-        left: 0%;
-      }
-      }
-    </style>
+    <title>reamyf</title>
   </head>
-  <body>
-    <div class="mainContent" style="display: flex">
-      <textarea id="codeMirrorId"></textarea>
-      <!-- probably a better way to style this but it works for now -->
-      <div class="buttonHolder">
-        <button id="runButton">run</button>
-        <button id="stopButton">stop</button>
-        <button id="stopButton">documentation</button>
-      </div>
-      <div class="canvasHolder">
-        <!-- lots of styling to make pixels crisp and not antialiased -->
-        <canvas
-          id="canvas"
-          width="200"
-          height="200"
-          style="
-            box-sizing: border-box;
-            image-rendering: -moz-crisp-edges;
-            image-rendering: -webkit-crisp-edges;
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
-            aspect-ratio: 1/1;
-            object-fit: contain;
-            width: 100%;
-            height: 100%;
-            padding: 1rem;
-          "
-        >
-        </canvas>
-      </div>
-    </div>
+  <body
+    style="
+      font-family: monospace;
+      max-width: 40rem;
+      font-size: 0.9rem;
+      padding: 1rem 2rem;
+    "
+  >
+    <h1>reamyf</h1>
+    <h3><i> really elementary and minimal yet fun </i></h3>
 
-    <script src="codeExamples.js"></script>
-    <script src="easyLang.js"></script>
-    <script src="index.js"></script>
+    <h2>what is it?</h2>
+    <p>
+      a <b>programming language</b> and <b>coding environment</b> that is fun to
+      use for graphical experiments, but is probably impractical to use for much
+      else. currently a major work in progress and things are subject to heavily change.
+    </p>
+
+    <h2>how does it work?</h2>
+    <p>
+      every line details a single instruction. the first word of a line is the instruction
+      name. the remaining words are arguments for that instruction. checkout the
+      documentation for details on the existing instructions.
+    </p>
+
+    <h2>why?</h2>
+    <p>
+      in the beginning, part of me was curious if i could make my own language and
+      environment for making non-trivial graphical experiments. another part of
+      me thought it could be a fun way to introduce beginners to programming.
+      now i am just goofing around adding and features i think are interesting.
+      it has been really fun making this.
+    </p>
+
+    <h2>current features:</h2>
+    <ul>
+      <li>web editor that allows editing and running code</li>
+      <li>graphics and animation functionality</li>
+      <li>14 unique instructions</li>
+      <li>3 code examples</li>
+    </ul>
+
+    <h2>upcoming features:</h2>
+    <ul>
+      <li>console with printing and error support</li>
+      <li>detect and timeout unresponsive code</li>
+      <li>improved existing functions and new functions</li>
+      <li>more examples</li>
+      <li>improved documentation</li>
+    </ul>
+
+    <a href="/editor.html">code editor</a>
+    <a href="/documentation.html">documentation</a>
+    <a href="https://github.com/onsclom/playLang">github</a>
   </body>
 </html>

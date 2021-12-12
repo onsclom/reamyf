@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>reamyf editor</title>
+    <script src="lib/codemirror.js"></script>
+    <link rel="stylesheet" href="lib/codemirror.css" />
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .codeHolder {
+          width: 50%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+        }
+      .CodeMirror {
+        width: 100%;
+        height: 100%;
+      }
+      .mainContent {
+        width: 100%;
+        height: 100%;
+      }
+      .canvasHolder {
+        width: 50%;
+      }
+      .buttonHolder {
+        position: absolute; 
+        top: 0; 
+        left: 50%; 
+        margin: 0.5rem;
+      }
+      @media only screen and (max-width: 600px) {
+        .mainContent {
+          flex-direction: column;
+        }
+        .CodeMirror {
+          width: 100%;
+          height: 100%;
+        }
+        .codeHolder {
+          width: 100%;
+          height: 50%;
+        }
+        .canvasHolder {
+          width: 100%;
+          height: 50%;
+        }
+        .buttonHolder {
+        position: absolute; 
+        top: 50%;  
+        left: 0%;
+      }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mainContent" style="display: flex;">
+      
+      <div class="codeHolder">
+        <div class="topBar" style="display: inline; margin: .5rem">
+          <a href="/index.html">reamyf</a>
+          <label for="examples">examples:</label>
+          <select id="examplesId" name="examples" style="display:inline">
+            <option value="particles">particles</option>
+            <option value="snow">snow</option>
+            <option value="lines">lines</option>
+          </select>
+          <button id="loadExampleButton">load example</button>
+        </div>
+        <textarea id="codeMirrorId"></textarea>
+      </div>
+      <!-- probably a better way to style this but it works for now -->
+      <div class="buttonHolder">
+        <button id="runButton">run</button>
+        <button id="stopButton">stop</button>
+      </div>
+      <div class="canvasHolder">
+        <!-- lots of styling to make pixels crisp and not antialiased -->
+        <canvas
+          id="canvas"
+          width="200"
+          height="200"
+          style="
+            box-sizing: border-box;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -webkit-crisp-edges;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            aspect-ratio: 1/1;
+            object-fit: contain;
+            width: 100%;
+            height: 100%;
+            padding: 1rem;
+          "
+        >
+        </canvas>
+      </div>
+    </div>
+
+    <script src="codeExamples.js"></script>
+    <script src="easyLang.js"></script>
+    <script src="index.js"></script>
+  </body>
+</html>

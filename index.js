@@ -1,7 +1,7 @@
 // @ts-check
 /// <reference path="lib/codemirror.js" />
 
-document.getElementById('codeMirrorId').textContent=example1
+document.getElementById('codeMirrorId').textContent=particles
 
 const codeArea = /** @type {HTMLTextAreaElement} */ (document.getElementById('codeMirrorId'))
 var editor = CodeMirror.fromTextArea( codeArea, {
@@ -13,6 +13,7 @@ var editor = CodeMirror.fromTextArea( codeArea, {
 const canvas = /** @type {HTMLCanvasElement} */ (document.getElementById('canvas'));
 const ctx = canvas.getContext('2d');
 const exampleScript = document.getElementById('codeMirrorId').textContent
+const exampleSelect = /** @type {HTMLSelectElement} */  (document.getElementById('examplesId'))
 
 // TODO: abstractify this away in easyLang.js
 let runNumber = 0
@@ -32,4 +33,8 @@ document.getElementById("runButton").onclick = () => {
 
 document.getElementById("stopButton").onclick = () => {
   window.cancelAnimationFrame(curAnimationFrameId)
+}
+
+document.getElementById("loadExampleButton").onclick = () => {
+  editor.setValue(examples[exampleSelect.value])
 }

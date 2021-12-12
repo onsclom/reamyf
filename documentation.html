@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>reamyf docs</title>
+  </head>
+  <body
+    style="
+      font-family: monospace;
+      max-width: 40rem;
+      font-size: 0.9rem;
+      padding: 1rem 2rem;
+    "
+  >
+    <h1><a href="/index.html">reamyf</a> documentation</h1>
+
+    <h2>core</h2>
+    <ul>
+      <li>
+        <h3># ...</h3>
+        <p>
+          marks the current line as a comment that the interpretter should skip
+        </p>
+      </li>
+      <li>
+        <h3>@ HEADER_NAME</h3>
+        <p>
+          marks the current line as a header with name HEADER_NAME that may be jumped to
+        </p>
+        <p><i>
+          important note: <b>@ ANIMATION_LOOP</b> is a reserverved header that is automatically jumped to each animation frame
+        </i>
+        </p>
+      </li>
+      <li>
+        <h3>jumpif value/var1 comparison value/var2 header</h3>
+        <p>
+          jumps to header if the comparison (>, <, ==, !=, etc.) of value/var1
+          to value/var2 is true
+        </p>
+      </li>
+    </ul>
+
+    <h2>memory</h2>
+    <ul>
+      <li>
+        <h3>varset var1 value/var2</h3>
+        <p>sets variable with name var1 to value/var2</p>
+      </li>
+      <li>
+        <h3>list listName</h3>
+        <p>creates a list with listName</p>
+      </li>
+      <li>
+        <h3>push list value/var</h3>
+        <p>appends value/var to list</p>
+      </li>
+      <li>
+        <h3>l2v table index var</h3>
+        <p>sets var to value at index of table</p>
+      </li>
+      <li>
+        <h3>v2l var table index</h3>
+        <p>sets index at list to value of var</p>
+      </li>
+    </ul>
+
+    <h2>math</h2>
+    <ul>
+      <li>
+        <h3>add var1 value/var2</h3>
+        <p>sets var1 to var1 + value/var2</p>
+      </li>
+      <li>
+        <h3>rand var1 value/var2 value/var3</h3>
+        <p>sets var1 to a value between value/var2 and value/var3</p>
+      </li>
+      <li>
+        <h3>rounds var1 value/var2</h3>
+        <p>sets var1 to value/var2 rounded to nearest whole number</p>
+      </li>
+      <li>
+        <h3>mod var1 value/var2</h3>
+        <p>sets var1 to var1 modulus value/var2</p>
+      </li>
+    </ul>
+
+    <h2>graphics</h2>
+    <ul>
+      <li>
+        <h3>clrsc</h3>
+        <p>clears screen to black</p>
+      </li>
+      <li>
+        <h3>pixel value/var1 value/var2</h3>
+        <p>draws white pixel at x: value/var1, y: value/var2</p>
+      </li>
+    </ul>
+  </body>
+</html>
